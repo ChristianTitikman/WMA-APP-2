@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Challenge Tracker</title>
+    <style>
+h1 {
+    background: linear-gradient(to bottom right, #4CAF50, #81C784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5em; /* Adjust size as needed */
+    margin: 0; /* Remove default margin */
+}
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background: linear-gradient(to bottom right, #4CAF50, #81C784);
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        .challenge-form, .challenge-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .challenge-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .challenge-item:last-child {
+            border-bottom: none;
+        }
+        .delete-button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>FitQuest</h1>
+</header>
+
+<main>
+    <div class="challenge-form">
+        <h2>Create a Challenge</h2>
+        <input type="text" id="challengeName" placeholder="Challenge Name" required>
+        <input type="text" id="challengeDuration" placeholder="Duration (days)" required>
+        <button id="createChallenge">Create Challenge</button>
+    </div>
+
+    <div class="challenge-list">
+        <h2>Active Challenges</h2>
+        <div id="challenges"></div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const challengeNameInput = document.getElementById('challengeName');
+        const challengeDurationInput = document.getElementById('challengeDuration');
+        const challengesContainer = document.getElementById('challenges');
+        const createChallengeButton = document.getElementById('createChallenge');
+
+        const loadChallenges = () => {
+            const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+            challengesContainer.innerHTML = '';
+            challenges.forEach((challenge, index) => {
+                const challengeElement = document.createElement('div');
+                challengeElement.className = 'challenge-item';
+                challengeElement.innerText = `${challenge.name} - Duration: ${challenge.duration} days`;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-button';
+                deleteButton.innerText = 'Delete';
+                deleteButton.onclick = () => {
+                    deleteChallenge(index);
+                };
+
+                challengeElement.appendChild(deleteButton);
+                challengesContainer.appendChild(challengeElement);
+            });
+        };
+
+        const saveChallenge = (name, duration) => {
+            const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+            challenges.push({ name, duration });
+            localStorage.setItem('challenges', JSON.stringify(challenges));
+            loadChallenges();
+        };
+
+        const deleteChallenge = (index) => {
+            const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+            challenges.splice(index, 1); // Remove the challenge at the specified index
+            localStorage.setItem('challenges', JSON.stringify(challenges));
+            loadChallenges();
+        };
+
+        createChallengeButton.addEventListener('click', () => {
+            const name = challengeNameInput.value.trim();
+            const duration = challengeDurationInput.value.trim();
+            if (name && duration) {
+                saveChallenge(name, duration);
+                challengeNameInput.value = '';
+                challengeDurationInput.value = '';
+            } else {
+                alert('Please fill in both fields.');
+            }
+        });
+
+        loadChallenges();
+    });
+</script>
+
+</body>
+</html>

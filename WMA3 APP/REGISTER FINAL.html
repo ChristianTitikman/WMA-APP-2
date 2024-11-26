@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Fitness Challenge Tracker</title>
+    <style>
+        h1 {
+            background: linear-gradient(to bottom right, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+        .registration-form {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            width: 90%;
+            max-width: 400px; /* Responsive width */
+        }
+        input, select, button {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em; /* Slightly larger font size */
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #photoPreview {
+            margin: 10px 0;
+            max-width: 100%;
+            border-radius: 4px;
+            display: none; /* Initially hidden */
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <h1>Register</h1>
+    <div class="registration-form">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="number" id="age" placeholder="Age" required min="1">
+        <input type="date" id="birthday" required>
+        <select id="gender" required>
+            <option value="" disabled selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <input type="number" id="weight" placeholder="Weight (kg)" required min="1">
+        <input type="number" id="height" placeholder="Height (cm)" required min="1">
+        
+        <input type="file" id="photo" accept="image/*" capture="environment" required>
+        <img id="photoPreview" alt="Photo Preview">
+
+        <button id="submitRegistration">Register</button>
+        <div class="error" id="errorMessage"></div>
+    </div>
+</main>
+
+<script>
+    document.getElementById('submitRegistration').addEventListener('click', () => {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const birthday = document.getElementById('birthday').value.trim();
+        const gender = document.getElementById('gender').value;
+        const weight = document.getElementById('weight').value.trim();
+        const height = document.getElementById('height').value.trim();
+        const photoInput = document.getElementById('photo');
+        const photoFile = photoInput.files[0];
+        const errorMessage = document.getElementById('errorMessage');
+
+        errorMessage.innerText = ''; // Clear previous error messages
+
+        if (username && password && age && birthday && gender && weight && height && photoFile) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const userInfo = {
+                    username,
+                    password,
+                    age,
+                    birthday,
+                    gender,
+                    weight,
+                    height,
+                    photo: event.target.result // Store image data as base64
+                };
+                localStorage.setItem('user', JSON.stringify(userInfo));
+                alert('Registration successful! You can now log in.');
+                window.location.href = 'MyFinalPage.html'; // Redirect to main page
+            };
+            reader.readAsDataURL(photoFile); // Convert image file to base64
+        } else {
+            errorMessage.innerText = 'Please fill in all fields correctly.';
+        }
+    });
+
+    // Preview the selected photo
+    document.getElementById('photo').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const preview = document.getElementById('photoPreview');
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block'; // Show the preview image
+        };
+        if (file) {
+            reader.readAsDataURL(file); // Convert image file to base64 for preview
+        } else {
+            preview.style.display = 'none'; // Hide preview if no file
+        }
+    });
+</script>
+
+</body>
+</html>

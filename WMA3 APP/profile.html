@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Fitness Challenge Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        header {
+            background: linear-gradient(to bottom right, #4CAF50, #81C784);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+        }
+        .profile-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            width: 90%;
+            max-width: 400px;
+        }
+        img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-info {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .back-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            margin-top: 20px; /* Adding margin for spacing */
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>User Profile</h1>
+</header>
+
+<main>
+    <div class="profile-container" id="profileContainer">
+        <img id="profilePicture" src="" alt="Profile Picture">
+        <div class="profile-info" id="usernameDisplay"></div>
+        <div class="profile-info" id="birthdayDisplay"></div>
+    </div>
+    <button class="back-button" onclick="window.location.href='MyFinalPage.html'">Back to Menu</button>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const usernameDisplay = document.getElementById('usernameDisplay');
+        const birthdayDisplay = document.getElementById('birthdayDisplay');
+        const profilePicture = document.getElementById('profilePicture');
+
+        if (user) {
+            usernameDisplay.innerText = `Username: ${user.username}`;
+            birthdayDisplay.innerText = `Birthday: ${new Date(user.birthday).toLocaleDateString()}`;
+            profilePicture.src = user.photo; // Set the profile picture
+        } else {
+            usernameDisplay.innerText = 'No user data found. Please register.';
+            birthdayDisplay.innerText = '';
+            profilePicture.style.display = 'none'; // Hide picture if no user data
+        }
+    });
+</script>
+
+</body>
+</html>

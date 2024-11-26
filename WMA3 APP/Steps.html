@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diary</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .diary {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            max-width: 500px;
+        }
+        input, textarea {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px; /* Space between buttons */
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .entry-list {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 1em;
+            color: #333;
+        }
+        .entry {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+        .entry:hover {
+            background-color: #f1f1f1;
+        }
+        .entry strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #4CAF50;
+            font-size: 1.2em;
+        }
+        .entry button {
+            background-color: #2196F3;
+            margin-top: 5px;
+            width: auto;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            border-radius: 5px;
+        }
+        .entry button.edit {
+            background-color: #FFC107;
+            right: 90px; /* Adjust position for edit button */
+        }
+        .entry button.delete {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+
+<h1>My Diary</h1>
+<div class="diary">
+    <input type="text" id="diaryTitle" placeholder="Diary Entry Title" required>
+    <textarea id="diaryContent" rows="4" placeholder="Write your diary entry here..." required></textarea>
+    <button id="addEntryButton">Add Diary Entry</button>
+    <div class="entry-list" id="entryList"></div>
+</div>
+
+<script>
+    let currentEditIndex = null; // To track the index of the entry being edited
+
+    document.getElementById('addEntryButton').addEventListener('click', () => {
+        const title = document.getElementById('diaryTitle').value.trim();
+        const content = document.getElementById('diaryContent').value.trim();
+        
+        if (title && content) {
+            if (currentEditIndex !== null) {
+                // Update existing entry
+                updateEntry(currentEditIndex, title, content);
+            } else {
+                // Create a new diary entry
+                addEntry(title, content);
+            }
+
+            // Clear the input fields
+            document.getElementById('diaryTitle').value = '';
+            document.getElementById('diaryContent').value = '';
+        } else {
+            alert('Please fill in both the title and content.');
+        }
+    });
+
+    function addEntry(title, content) {
+        const entryList = document.getElementById('entryList');
+        const entryDiv = document.createElement('div');
+        entryDiv.className = 'entry';
+
+        entryDiv.innerHTML = `
+            <strong>${title}</strong>
+            <p>${content}</p>
+            <button class="edit" onclick="editEntry(this)">Edit</button>
+            <button class="delete" onclick="deleteEntry(this)">Delete</button>
+        `;
+
+        entryList.appendChild(entryDiv);
+    }
+
+    function editEntry(button) {
+        const entryDiv = button.parentElement;
+        const title = entryDiv.querySelector('strong').innerText;
+        const content = entryDiv.querySelector('p').innerText;
+
+        document.getElementById('diaryTitle').value = title;
+        document.getElementById('diaryContent').value = content;
+
+        currentEditIndex = Array.from(entryDiv.parentNode.children).indexOf(entryDiv); // Get the index
+    }
+
+    function updateEntry(index, title, content) {
+        const entryList = document.getElementById('entryList');
+        const entryDiv = entryList.children[index];
+
+        entryDiv.querySelector('strong').innerText = title;
+        entryDiv.querySelector('p').innerText = content;
+
+        currentEditIndex = null; // Reset the edit index
+    }
+
+    function deleteEntry(button) {
+        const entryDiv = button.parentElement;
+        entryDiv.remove();
+    }
+</script>
+
+</body>
+</html>

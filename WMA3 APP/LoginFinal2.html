@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Fitness App</title>
+    <link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom right, #4CAF50, #81C784);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center; /* Center text inside the body */
+        }
+        .bg {
+            margin-bottom: 20px; /* Space between gif and welcome text */
+        }
+        .welcome {
+            margin-bottom: 20px;
+        }
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .loading.active {
+            display: flex;
+        }
+        img {
+            max-width: 100%; /* Responsive image */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <img src="Logo.gif" alt="FitQuest GIF">
+    </div>
+    <div class="welcome">
+        <h1>Welcome to FitQuest!</h1>
+        <p>Your journey to a healthier life starts here.</p>
+        <ion-button id="startButton">Get Started</ion-button>
+    </div>
+
+    <div class="loading" id="loadingScreen">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Loading...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic.js"></script>
+    <script>
+        const startButton = document.getElementById('startButton');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const welcomeScreen = document.querySelector('.welcome');
+
+        startButton.addEventListener('click', () => {
+            welcomeScreen.style.display = 'none';
+            loadingScreen.classList.add('active');
+
+            // Simulate loading
+            setTimeout(() => {
+                loadingScreen.classList.remove('active');
+                // Redirect to Register.html
+                window.location.href = 'REGISTER FINAL.html';
+            }, 2000); // 2 seconds loading
+        });
+    </script>
+</body>
+</html>

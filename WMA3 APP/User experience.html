@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Experience Level</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .level {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>User Experience Level</h1>
+    <p>Total Experience Points: <span id="expPoints">0</span></p>
+    <p>Your Level: <span class="level" id="userLevel">1</span></p>
+    <button class="back-button" onclick="goBack()">Back</button>
+</div>
+
+<script>
+    // Function to calculate user level based on experience points
+    function calculateLevel(expPoints) {
+        if (expPoints < 100) return 1;
+        if (expPoints < 200) return 2;
+        if (expPoints < 300) return 3;
+        if (expPoints < 400) return 4;
+        return 5; // Level 5 for 400+ points
+    }
+
+    // Function to calculate total experience points based on accomplished challenges
+    function calculateExperienceFromAccomplished() {
+        const accomplishedChallenges = JSON.parse(localStorage.getItem('accomplished')) || [];
+        const pointsPerChallenge = 50; // Define points per completed challenge
+        return accomplishedChallenges.length * pointsPerChallenge; // Total points
+    }
+
+    // Function to update the displayed experience points and level
+    function updateDisplay(expPoints) {
+        document.getElementById('expPoints').innerText = expPoints;
+        const userLevel = calculateLevel(expPoints);
+        document.getElementById('userLevel').innerText = userLevel;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Calculate experience points based on accomplished challenges
+        const expPoints = calculateExperienceFromAccomplished();
+        updateDisplay(expPoints); // Display the points and level
+    });
+
+    function goBack() {
+        window.history.back(); // Navigate to the previous page
+    }
+</script>
+
+</body>
+</html>
